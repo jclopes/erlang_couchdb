@@ -89,11 +89,11 @@ update_document(ID, Rev, Doc) ->
 	Doc2 = update_doc_fields(Document, Doc),
 	replace_document(ID, Rev, Doc2).
 update_document(Db, ID, Rev, Doc) ->
-	{json, Document} = retrieve_document(ID),
+	{json, Document} = retrieve_document(Db, ID),
 	Doc2 = update_doc_fields(Document, Doc),
 	replace_document(?DB_HOST, Db, ID, Rev, Doc2).
 update_document(Server, Db, ID, Rev, Doc) ->
-	{json, Document} = retrieve_document(ID),
+	{json, Document} = retrieve_document(Db, ID),
 	Doc2 = update_doc_fields(Document, Doc),
 	replace_document(Server, Db, ID, Rev, Doc2).
 
