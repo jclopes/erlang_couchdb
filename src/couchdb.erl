@@ -80,20 +80,20 @@ retrieve_document(Server, Db, ID) ->
 %%
 %% @doc Update only several fields in a document. Leave all other fields unmodified
 update_document(ID, Doc) ->
-	{json, Document} = retrieve_document(ID),
+	{json, Document} = retrieve_document(?DB_HOST, ?DB_DATABASE, ID),
 	Rev = get_rev(Document),
 	Doc2 = update_doc_fields(Document, Doc),
-	replace_document(ID, Rev, Doc2).
+	replace_document(?DB_HOST, ?DB_DATABASE, ID, Rev, Doc2).
 update_document(ID, Rev, Doc) ->
-	{json, Document} = retrieve_document(ID),
+	{json, Document} = retrieve_document(?DB_HOST, ?DB_DATABASE, ID),
 	Doc2 = update_doc_fields(Document, Doc),
-	replace_document(ID, Rev, Doc2).
+	replace_document(?DB_HOST, ?DB_DATABASE, ID, Rev, Doc2).
 update_document(Db, ID, Rev, Doc) ->
-	{json, Document} = retrieve_document(Db, ID),
+	{json, Document} = retrieve_document(?DB_HOST, Db, ID),
 	Doc2 = update_doc_fields(Document, Doc),
 	replace_document(?DB_HOST, Db, ID, Rev, Doc2).
 update_document(Server, Db, ID, Rev, Doc) ->
-	{json, Document} = retrieve_document(Db, ID),
+	{json, Document} = retrieve_document(Server, Db, ID),
 	Doc2 = update_doc_fields(Document, Doc),
 	replace_document(Server, Db, ID, Rev, Doc2).
 
@@ -103,7 +103,7 @@ update_document(Server, Db, ID, Rev, Doc) ->
 replace_document(ID, Doc) ->
 	{json, Document} = retrieve_document(ID),
 	Rev = get_rev(Document),
-	replace_document(ID, Rev, Doc).
+	replace_document(?DB_HOST, ?DB_DATABASE, ID, Rev, Doc).
 	%erlang_couchdb:update_document(, [{<<"_rev">>, list_to_binary(Rev)} | Doc]).
 replace_document(ID, Rev, Doc) ->
 	erlang_couchdb:update_document(?DB_HOST, ?DB_DATABASE, ID, [{<<"_rev">>, list_to_binary(Rev)} | Doc]).
